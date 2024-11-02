@@ -1,0 +1,66 @@
+cabal-version:       3.0
+name:                bodywhash
+version:             0.1.0.0
+synopsis:            Discord bot
+homepage:            https://github.com/ners/bodywhash
+license:             Apache-2.0
+license-file:        LICENCE.md
+author:              ners
+maintainer:          ners@gmx.ch
+bug-reports:         https://github.com/ners/bodywhash/issues
+category:            System
+build-type:          Simple
+extra-source-files:  CHANGELOG.md, README.md
+
+source-repository head
+  type:     git
+  location: https://github.com/ners/bodywhash
+
+common common
+    default-language: GHC2021
+    ghc-options:
+        -Weverything
+        -Wno-unsafe
+        -Wno-missing-safe-haskell-mode
+        -Wno-missing-export-lists
+        -Wno-missing-import-lists
+        -Wno-missing-kind-signatures
+        -Wno-all-missed-specialisations
+    default-extensions:
+        ApplicativeDo
+        Arrows
+        DataKinds
+        DefaultSignatures
+        DeriveAnyClass
+        DeriveGeneric
+        DerivingStrategies
+        DerivingVia
+        ExplicitNamespaces
+        NoImplicitPrelude
+        OverloadedLabels
+        OverloadedRecordDot
+        OverloadedStrings
+        RecordWildCards
+        RecursiveDo
+        TypeFamilies
+        ViewPatterns
+
+executable bodywhash
+    import:           common
+    hs-source-dirs:   app
+    main-is:          Main.hs
+    ghc-options:      -O2 -threaded
+    build-depends:
+        base,
+        containers,
+        dhall,
+        discord-haskell,
+        generic-lens,
+        lens,
+        mtl,
+        random,
+        random-fu,
+        rhine,
+        rhine-discord,
+        rvar,
+        text,
