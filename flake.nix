@@ -55,12 +55,25 @@
       let
         pkgs = pkgs'.extend overlay;
         hps = hpsFor pkgs;
+        bodywhash = pkgs.haskellPackages.${pname};
       in
       {
         formatter.${system} = pkgs.nixpkgs-fmt;
         legacyPackages.${system} = pkgs;
         packages.${system} = {
-          default = pkgs.haskellPackages.${pname};
+          default = bodywhash;
+          oci-image = pkgs.dockerTools.buildLayeredImage {
+            name = pname;
+            tag = "latest";
+            contents = [ bodywhash ];
+            config = {
+              Cmd = [ "${bodywhash}/bin/bodywhash" ];
+              WorkingDir = "/data";
+              Volumes = {
+                "/data" = {};
+              };
+            };
+          };
         };
         devShells.${system} =
           foreach hps (ghcName: hp: {
