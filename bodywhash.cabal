@@ -28,6 +28,7 @@ common common
         -Wno-all-missed-specialisations
     default-extensions:
         ApplicativeDo
+        BlockArguments
         Arrows
         DataKinds
         DefaultSignatures
@@ -49,6 +50,9 @@ executable bodywhash
     import:           common
     hs-source-dirs:   app
     main-is:          Main.hs
+    other-modules:
+        Bodywhash.Config
+        Bodywhash.State
     ghc-options:      -O2 -threaded
     build-depends:
         base,
@@ -62,5 +66,4 @@ executable bodywhash
         random-fu,
         rhine,
         rhine-discord,
-        rvar,
         text,
