@@ -1,20 +1,20 @@
 cabal-version:       3.0
-name:                bodywhash
+name:                bodywash
 version:             0.1.0.0
 synopsis:            Discord bot
-homepage:            https://github.com/ners/bodywhash
+homepage:            https://github.com/chysi/bodywash
 license:             Apache-2.0
 license-file:        LICENCE.md
-author:              ners
-maintainer:          ners@gmx.ch
-bug-reports:         https://github.com/ners/bodywhash/issues
+author:              chysi
+maintainer:          cazim.hysi@gmail.com
+bug-reports:         https://github.com/chysi/bodywash/issues
 category:            System
 build-type:          Simple
 extra-source-files:  CHANGELOG.md, README.md
 
 source-repository head
   type:     git
-  location: https://github.com/ners/bodywhash
+  location: https://github.com/chysi/bodywash
 
 common common
     default-language: GHC2021
@@ -46,13 +46,13 @@ common common
         TypeFamilies
         ViewPatterns
 
-executable bodywhash
+executable bodywash
     import:           common
     hs-source-dirs:   app
     main-is:          Main.hs
     other-modules:
-        Bodywhash.Config
-        Bodywhash.State
+        Bodywash.Config
+        Bodywash.State
     ghc-options:      -O2 -threaded
     build-depends:
         base,
@@ -67,3 +67,4 @@ executable bodywhash
         rhine,
         rhine-discord,
         text,
+        time,

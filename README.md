@@ -1,4 +1,4 @@
-# 🧼 Bodywhash
+# 🧼 bodywash
 
 A Discord bot powered by [rhine-discord]
 

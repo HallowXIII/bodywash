@@ -1,8 +1,8 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module Bodywhash.State where
+module Bodywash.State where
 
-import Bodywhash.Config
+import Bodywash.Config
 import Data.Either (fromRight)
 import Data.Sequence (Seq)
 import Data.Sequence qualified as Seq
@@ -11,8 +11,7 @@ import Discord.Requests (ChannelRequest (GetChannelMessages), MessageTiming (Bef
 import Discord.Types
     ( ChannelId
     , DiscordId (DiscordId)
-    , Message (messageId)
-    , MessageId
+    , Message (messageId, messageTimestamp)
     , Snowflake (Snowflake)
     )
 import GHC.Generics (Generic)
@@ -26,8 +25,9 @@ deriving newtype instance Num (DiscordId a)
 data State = State
     { stdGen :: StdGen
     , channelId :: ChannelId
-    , messages :: Seq MessageId
-    , messageHalfLifeSeconds :: Double
+    , messages :: Seq Message
+    , maxAllowedMessages :: Int
+    , maxMessageLifetime :: Int
     }
     deriving stock (Generic)
 
@@ -61,6 +61,7 @@ getInitialState Config{..} = do
         State
             { stdGen
             , channelId = DiscordId . Snowflake $ channelId
-            , messages = messageId <$> messages'
-            , messageHalfLifeSeconds
+            , messages = Seq.reverse $ Seq.sortOn messageTimestamp messages'
+            , maxAllowedMessages = fromIntegral maxAllowedMessages
+            , maxMessageLifetime = fromIntegral maxMessageLifetime
             }

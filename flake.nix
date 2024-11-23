@@ -35,7 +35,7 @@
         { }
         pkgs.haskell.packages;
       hpsFor = pkgs: { default = pkgs.haskellPackages; } // ghcsFor pkgs;
-      pname = "bodywhash";
+      pname = "bodywash";
       src = sourceFilter ./.;
       overlay = lib.composeManyExtensions [
         inputs.rhine-chat.overlays.default
@@ -55,19 +55,19 @@
       let
         pkgs = pkgs'.extend overlay;
         hps = hpsFor pkgs;
-        bodywhash = pkgs.haskellPackages.${pname};
+        bodywash = pkgs.haskellPackages.${pname};
       in
       {
         formatter.${system} = pkgs.nixpkgs-fmt;
         legacyPackages.${system} = pkgs;
         packages.${system} = {
-          default = bodywhash;
+          default = bodywash;
           oci-image = pkgs.dockerTools.buildLayeredImage {
             name = pname;
             tag = "latest";
-            contents = [ bodywhash ];
+            contents = [ bodywash ];
             config = {
-              Cmd = [ "${bodywhash}/bin/bodywhash" ];
+              Cmd = [ "${bodywash}/bin/bodywash" ];
               WorkingDir = "/data";
               Volumes = {
                 "/data" = {};
