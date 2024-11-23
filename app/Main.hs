@@ -20,6 +20,7 @@ import Discord.Types (ChannelId, Event (..), Message (..), MessageId)
 import FRP.Rhine
 import FRP.Rhine.Discord
 import Prelude
+import Control.Monad (unless)
 
 handleEventsSF :: ClSF DiscordHandler DiscordEventClock State State
 handleEventsSF = proc st -> do
@@ -73,8 +74,9 @@ sim _ = State.execStateT do
   let (aliveMessages, decayedMessages) = Seq.splitAt maxAllowedMessages messages
       (decayedMessages', aliveMessages') = Seq.partition (\msg -> secondsSinceTimestamp now (messageTimestamp msg) > maxMessageLifetime) aliveMessages
       finalDecayedMessages = decayedMessages >< decayedMessages'
-  liftIO $ putStrLn ("DecayedMessages: " ++ show (fmap (msgInfo now) finalDecayedMessages))
-  liftIO $ putStrLn ("AliveMessages: " ++ show (fmap (msgInfo now) aliveMessages'))
+  liftIO $ unless (null finalDecayedMessages) do
+    putStrLn ("DecayedMessages: " ++ show (fmap (msgInfo now) finalDecayedMessages))
+    putStrLn ("AliveMessages: " ++ show (fmap (msgInfo now) aliveMessages'))
   #messages .= aliveMessages
   void . State.lift . deleteMessageCall channelId $ toList (fmap messageId finalDecayedMessages)
 
